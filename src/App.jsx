@@ -50,6 +50,7 @@ function App() {
 
 
   const requiredFields = {
+    id:formdata.id,
     article_no: formdata.article_no,
     product_service: formdata.product_service,
     in_price: Number(formdata.in_price),
