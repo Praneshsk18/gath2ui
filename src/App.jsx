@@ -23,7 +23,7 @@ import axios from "axios";
 function App() {
   const [data, setdata] = useState([]);
   const [formdata, setformdata] = useState({
-    id: "",
+    id: "1",
     article_no: "",
     product_service: "",
     in_price: "",
