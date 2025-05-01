@@ -248,6 +248,11 @@ function App() {
                   <div className="w-1/3 text-right">
                     <p className="text-sm font-medium">{item.price}</p>
                   </div>
+                  <button
+        onClick={() => handleDelete(item.article_no)}
+        className="text-red-500 hover:text-red-700"
+        title="Delete"
+      ><CircleX size={18} /></button>
                 </div>
               ))}
             </div>
