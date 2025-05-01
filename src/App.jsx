@@ -45,31 +45,19 @@ function App() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log("Form Data:", formdata);
+    e.preventDefault();
+    console.log("Form Data:", formdata);
 
-
-  const requiredFields = {
-    id:formdata.id,
-    article_no: formdata.article_no,
-    product_service: formdata.product_service,
-    in_price: Number(formdata.in_price),
-    price: Number(formdata.price),
-    unit: formdata.unit,
-    in_stock: Number(formdata.in_stock),
-    description: formdata.description,
+    try {
+      const response = await axios.post("https://gath2.onrender.com/add", formdata);
+      console.log("Response:", response.data);
+      closeForm();
+      const updatedData = await axios.get("https://gath2.onrender.com");
+      setdata(updatedData.data);
+    } catch (error) {
+      console.error("Error saving product:", error);
+    }
   };
-
-  try {
-    const response = await axios.post("https://gath2.onrender.com/add", formdata);
-    console.log("Response:", response.data);
-    closeForm();
-    const updatedData = await axios.get("https://gath2.onrender.com");
-    setdata(updatedData.data);
-  } catch (error) {
-    console.error("Error saving product:", error.response?.data || error.message);
-  }
-};
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -82,6 +70,18 @@ function App() {
     };
     fetchdata();
   }, []);
+
+  const handleDelete = async (article_no) => {
+    try {
+      console.log('Dot')
+      await axios.delete(`https://gath2.onrender.com/remove/${article_no}`);
+      const updatedData = await axios.get("https://gath2.onrender.com");
+      setdata(updatedData.data);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
   const truncateText = (text, maxLength = 50) =>
     text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 
@@ -269,7 +269,12 @@ function App() {
                   <div className="w-[10%]">{item.price}</div>
                   <div className="w-[10%]">{item.in_stock}</div>
                   <div className="w-[10%]">{item.unit}</div>
-                  <div className="w-[25%]">{truncateText(item.description)}</div>
+                  <div className="w-[25%]">{truncateText(item.description,60)}</div>
+                  <button
+        onClick={() => handleDelete(item.article_no)}
+        className="text-red-500 hover:text-red-700"
+        title="Delete"
+      ><CircleX size={18} /></button>
                 </div>
               ))}
             </div>
