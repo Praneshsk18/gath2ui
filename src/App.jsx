@@ -250,7 +250,7 @@ function App() {
                   </div>
                   <button
         onClick={() => handleDelete(item.article_no)}
-        className="text-red-500 hover:text-red-700"
+        className="text-red-500 ml-3 hover:text-red-700"
         title="Delete"
       ><CircleX size={18} /></button>
                 </div>
