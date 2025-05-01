@@ -45,19 +45,39 @@ function App() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Form Data:", formdata);
+  e.preventDefault();
+  console.log("Form Data:", formdata);
 
-    try {
-      const response = await axios.post("https://gath2.onrender.com/add", formdata);
-      console.log("Response:", response.data);
-      closeForm();
-      const updatedData = await axios.get("https://gath2.onrender.com");
-      setdata(updatedData.data);
-    } catch (error) {
-      console.error("Error saving product:", error);
-    }
+  // Validate form data
+  const requiredFields = {
+    id: Number(formdata.id),
+    article_no: formdata.article_no,
+    product_service: formdata.product_service,
+    in_price: Number(formdata.in_price),
+    price: Number(formdata.price),
+    unit: formdata.unit,
+    in_stock: Number(formdata.in_stock),
+    description: formdata.description,
   };
+
+  for (const [key, value] of Object.entries(requiredFields)) {
+    if (value == null || (typeof value === "number" && isNaN(value))) {
+      console.error(`Missing or invalid ${key}`);
+      alert(`Please fill in a valid ${key}`);
+      return;
+    }
+  }
+
+  try {
+    const response = await axios.post("https://gath2.onrender.com/add", formdata);
+    console.log("Response:", response.data);
+    closeForm();
+    const updatedData = await axios.get("https://gath2.onrender.com");
+    setdata(updatedData.data);
+  } catch (error) {
+    console.error("Error saving product:", error.response?.data || error.message);
+  }
+};
 
   useEffect(() => {
     const fetchdata = async () => {
