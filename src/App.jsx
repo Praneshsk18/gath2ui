@@ -49,7 +49,10 @@ function App() {
     console.log("Form Data:", formdata);
 
     try {
-      const response = await axios.post("https://gath2.onrender.com/add", formdata);
+      const response = await axios.post(
+        "https://gath2.onrender.com/add",
+        formdata
+      );
       console.log("Response:", response.data);
       closeForm();
       const updatedData = await axios.get("https://gath2.onrender.com");
@@ -73,7 +76,7 @@ function App() {
 
   const handleDelete = async (article_no) => {
     try {
-      console.log('Dot')
+      console.log("Dot");
       await axios.delete(`https://gath2.onrender.com/remove/${article_no}`);
       const updatedData = await axios.get("https://gath2.onrender.com");
       setdata(updatedData.data);
@@ -86,18 +89,31 @@ function App() {
     text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-white">
-      <div className="flex flex-row justify-between items-center w-full bg-blue-600 p-2 md:p-4">
+    <div className="flex flex-col min-h-screen w-full bg-white overflow-hidden">
+      <div className="flex flex-row justify-between items-center h-20 w-full bg-blue-600 p-2 md:p-4">
         <button className="text-white md:hidden" onClick={toggleSidebar}>
           <Menu size={24} />
         </button>
-        <div className="flex flex-row items-center gap-2 md:gap-4 text-white text-sm md:text-base">
-          <p>English</p>
-          <img
-            src="https://storage.123fakturere.no/public/flags/GB.png"
-            className="h-5 md:h-6 rounded-md"
-            alt="Language"
-          />
+        <div className="flex flex-row items-center gap-2 md:gap-4 w-full mx-15 justify-between text-white text-sm md:text-base">
+          <div className="flex flex-row items-center gap-2">
+            <img
+              src="https://tse4.mm.bing.net/th?id=OIP.hGSCbXlcOjL_9mmzerqAbQHaHa&pid=Api&P=0&h=180"
+              className="h-5 md:h-10 rounded-full"
+              alt="Language"
+            />
+            <div className="flex flex-col">
+              <p className="text-sm md:text-base">John Andre</p>
+              <p className="text-xs md:text-sm">Starfroid AS</p>
+            </div>
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <p>English</p>
+            <img
+              src="https://storage.123fakturere.no/public/flags/GB.png"
+              className="h-5 md:h-6 rounded-md"
+              alt="Language"
+            />
+          </div>
         </div>
       </div>
       {showForm && (
@@ -213,46 +229,57 @@ function App() {
                   className="w-full border border-gray-300 rounded-full h-8 pl-4 pr-10 focus:outline-none text-sm"
                   placeholder="Search Article No..."
                 />
-                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400" />
               </div>
               <div className="relative w-full md:w-[200px]">
                 <input
                   className="w-full border border-gray-300 rounded-full h-8 pl-4 pr-10 focus:outline-none text-sm"
                   placeholder="Search Product..."
                 />
-                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400" />
               </div>
             </div>
             <div className="flex flex-row gap-2">
               <button
-                className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full text-green-500 hover:bg-green-200"
+                className="flex  items-center gap-x-1 justify-center w-auto px-4 h-10 bg-green-100 rounded-full text-green-500 hover:bg-green-200 hover:cursor-pointer"
                 onClick={openForm}
-              >
+              >New Product
                 <CirclePlus size={20} />
               </button>
-              <button className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full text-blue-500 hover:bg-blue-200">
+              <button className="flex items-center justify-center w-auto px-4 h-10 gap-x-1 bg-blue-100 rounded-full text-blue-500 hover:bg-blue-200 hover:cursor-pointer">Print list
                 <Printer size={20} />
               </button>
-              <button className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200">
+              <button className="flex items-center justify-center gap-x-1 w-auto h-10 px-4 bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 hover:cursor-pointer">Advanced Mode
                 <Blend size={20} />
               </button>
             </div>
           </div>
           <div className="w-full h-[calc(100vh-200px)] overflow-x-auto overflow-y-auto">
-            <div className="md:hidden flex flex-col space-y-2 min-w-[600px]">
+            <div className="md:hidden flex flex-col space-y-2 min-w-[300px]">
               {data.map((item, index) => (
-                <div key={index} className="flex flex-row justify-between items-center p-2 bg-gray-50 rounded-lg min-w-[600px]">
-                  <div className="flex-1 pr-2">
-                    <p className="text-sm font-medium">{truncateText(item.product_service)}</p>
-                  </div>
-                  <div className="w-1/3 text-right">
-                    <p className="text-sm font-medium">{item.price}</p>
+                <div
+                  key={index}
+                  className="flex flex-row items-center p-2 bg-gray-50 rounded-lg min-w-[300px]"
+                >
+                  <div className="flex-1 flex flex-col pr-2">
+                    <p className="text-sm font-medium">
+                      {truncateText(item.product_service)}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Art. No: {item.article_no}
+                    </p>
+                    <p className="text-xs text-gray-500">Price: {item.price}</p>
+                    <p className="text-xs text-gray-500">
+                      In Stock: {item.in_stock}
+                    </p>
                   </div>
                   <button
-        onClick={() => handleDelete(item.article_no)}
-        className="text-red-500 ml-3 hover:text-red-700"
-        title="Delete"
-      ><CircleX size={18} /></button>
+                    onClick={() => handleDelete(item.article_no)}
+                    className="text-red-500 hover:text-red-700 flex items-center justify-center w-8 h-8"
+                    title="Delete"
+                  >
+                    <CircleX size={16} />
+                  </button>
                 </div>
               ))}
             </div>
@@ -269,17 +296,23 @@ function App() {
               {data.map((item, index) => (
                 <div key={index} className="flex flex-row p-2 border-b text-sm">
                   <div className="w-[10%]">{item.article_no}</div>
-                  <div className="w-[25%]">{truncateText(item.product_service)}</div>
+                  <div className="w-[25%]">
+                    {truncateText(item.product_service)}
+                  </div>
                   <div className="w-[10%]">{item.in_price}</div>
                   <div className="w-[10%]">{item.price}</div>
                   <div className="w-[10%]">{item.in_stock}</div>
                   <div className="w-[10%]">{item.unit}</div>
-                  <div className="w-[25%]">{truncateText(item.description,60)}</div>
+                  <div className="w-[25%]">
+                    {truncateText(item.description, 60)}
+                  </div>
                   <button
-        onClick={() => handleDelete(item.article_no)}
-        className="text-red-500 hover:text-red-700"
-        title="Delete"
-      ><CircleX size={18} /></button>
+                    onClick={() => handleDelete(item.article_no)}
+                    className="text-red-500 hover:text-red-700"
+                    title="Delete"
+                  >
+                    <CircleX size={18} />
+                  </button>
                 </div>
               ))}
             </div>
